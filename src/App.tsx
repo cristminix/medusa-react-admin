@@ -5,6 +5,8 @@ import { dataProvider } from "./dataProvider";
 import { ProductList } from "./products/ProductList";
 import { CustomerList } from "./customers/CustomerList";
 import { ProductShow } from "./products/ProductShow";
+import { OrderList } from "./orders/OrderList";
+import { OrderShow } from "./orders/OrderShow";
 
 export const App = () => (
   <Admin
@@ -12,7 +14,8 @@ export const App = () => (
     authProvider={authProvider}
     dataProvider={dataProvider}
   >
-    <Resource name="products" list={ProductList} show={ProductShow} />
-    <Resource name="customers" list={CustomerList} show={ShowGuesser} />
+    <Resource name="products" list={ProductList} show={ProductShow} options={{ label: "Produk" }} />
+    <Resource name="customers" list={CustomerList} show={ShowGuesser} options={{ label: "Pelanggan" }} />
+    <Resource name="orders" list={OrderList} show={OrderShow} options={{ label: "Pesanan" }} />
   </Admin>
 );

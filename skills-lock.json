@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "react-admin": {
+      "source": "marmelab/react-admin",
+      "sourceType": "github",
+      "computedHash": "54ce59bbc5e8707dba5677758152829afea31f55d0c11334d145909e2b9635d5"
+    }
+  }
+}

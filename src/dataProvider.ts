@@ -2,10 +2,12 @@
 import { DataProvider } from "react-admin";
 import { productProvider } from "./products/productProvider";
 import { customerProvider } from "./customers/customerProvider";
+import { orderProvider } from "./orders/orderProvider";
 
 const providers: Record<string, DataProvider> = {
     products: productProvider,
     customers: customerProvider,
+    orders: orderProvider,
 };
 
 export const dataProvider: DataProvider = {
