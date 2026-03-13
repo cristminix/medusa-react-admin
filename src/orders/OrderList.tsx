@@ -95,8 +95,10 @@ const DisplayIdField = () => {
 const TotalField = () => {
   const record = useRecordContext();
   if (!record) return null;
+  console.log({record});
+  const total = record.status === "canceled" ? record.original_total : record.total;
   return (
-    <span>{formatCurrency(record.total, record.currency_code)}</span>
+    <span>{formatCurrency(total, record.currency_code)}</span>
   );
 };
 

@@ -13,7 +13,15 @@ export const orderProvider: DataProvider = {
       limit,
       offset,
       fields:
-        "+*items,*shipping_address,*billing_address,subtotal,shipping_total,tax_total,discount_total,total,created_at,display_id",
+        "id,status,payment_status,fulfillment_status,email,currency_code,display_id,created_at," +
+        "total,subtotal,tax_total,discount_total," +
+        "original_total,original_subtotal,original_tax_total," +
+        "shipping_total,shipping_subtotal,shipping_tax_total," +
+        "original_shipping_total,original_shipping_subtotal,original_shipping_tax_total," +
+        "item_total,item_subtotal,item_tax_total," +
+        "original_item_total,original_item_subtotal,original_item_tax_total," +
+        "gift_card_total,gift_card_tax_total," +
+        "summary.*,items.*,shipping_address.*,billing_address.*",
       ...filter,
     };
 
@@ -32,13 +40,19 @@ export const orderProvider: DataProvider = {
   },
   getOne: async (resource, params) => {
     try {
-      const { order } = await sdk.admin.order.retrieve(
-        params.id.toString(),
-        {
-          fields:
-            "+*items,*shipping_address,*billing_address,*shipping_methods,subtotal,shipping_total,tax_total,discount_total,total,summary.*",
-        },
-      );
+      const { order } = await sdk.admin.order.retrieve(params.id.toString(), {
+        fields:
+          "id,status,payment_status,fulfillment_status,email,currency_code,display_id,created_at," +
+          "total,subtotal,tax_total,discount_total," +
+          "original_total,original_subtotal,original_tax_total," +
+          "shipping_total,shipping_subtotal,shipping_tax_total," +
+          "original_shipping_total,original_shipping_subtotal,original_shipping_tax_total," +
+          "item_total,item_subtotal,item_tax_total," +
+          "original_item_total,original_item_subtotal,original_item_tax_total," +
+          "gift_card_total,gift_card_tax_total," +
+          "summary.*,items.*,items.product.*,items.variant.*," +
+          "shipping_address.*,billing_address.*,shipping_methods.*",
+      });
       console.log(order);
       return { data: order };
     } catch (error) {

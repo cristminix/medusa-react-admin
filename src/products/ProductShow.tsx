@@ -1,274 +1,459 @@
 import {
   ArrayField,
   BooleanField,
-  DataTable,
+  ChipField,
   DateField,
-  NumberField,
-  ReferenceField,
+  FunctionField,
+  Labeled,
   Show,
-  SimpleShowLayout,
+  SingleFieldList,
   TextField,
-  UrlField,
+  useRecordContext,
 } from "react-admin";
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+  Stack,
+  Chip,
+} from "@mui/material";
+import MetadataField from "../lib/components/MetadataField";
 
-export const ProductShow = () => (
-  <Show>
-    <SimpleShowLayout>
-      <TextField source="title" />
-      <TextField source="subtitle" />
-      <TextField source="status" />
-      <TextField source="description" />
-      <TextField source="handle" />
-      <BooleanField source="is_giftcard" />
-      <BooleanField source="discountable" />
-      <TextField source="thumbnail" />
+const formatCurrency = (amount: number | null | undefined, currencyCode: string) => {
+  if (amount == null || isNaN(amount)) return "-";
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: currencyCode?.toUpperCase() || "IDR",
+  }).format(amount / 100);
+};
 
-      <TextField source="weight" />
-      <TextField source="length" />
-      <TextField source="height" />
-      <TextField source="width" />
-      <DateField source="hs_code" />
-      <TextField source="origin_country" />
-      <DateField source="mid_code" />
-      <TextField source="material" />
-      <DateField source="created_at" />
-      <DateField source="updated_at" />
-      <TextField source="deleted_at" />
-      <TextField source="metadata" />
-
-      <ArrayField source="options">
-        <DataTable>
-          <DataTable.Col source="id">
-            <TextField source="id" />
-          </DataTable.Col>
-          <DataTable.Col source="title">
-            <TextField source="title" />
-          </DataTable.Col>
-          <DataTable.Col source="metadata">
-            <TextField source="metadata" />
-          </DataTable.Col>
-
-          <DataTable.Col source="created_at">
-            <DateField source="created_at" />
-          </DataTable.Col>
-          <DataTable.Col source="updated_at">
-            <DateField source="updated_at" />
-          </DataTable.Col>
-          <DataTable.Col source="deleted_at">
-            <TextField source="deleted_at" />
-          </DataTable.Col>
-          <DataTable.Col source="values">
-            <ArrayField source="values">
-              <DataTable>
-                <DataTable.Col source="id">
-                  <TextField source="id" />
-                </DataTable.Col>
-                <DataTable.Col source="value">
-                  <TextField source="value" />
-                </DataTable.Col>
-                <DataTable.Col source="metadata">
-                  <TextField source="metadata" />
-                </DataTable.Col>
-
-                <DataTable.Col source="created_at">
-                  <DateField source="created_at" />
-                </DataTable.Col>
-                <DataTable.Col source="updated_at">
-                  <DateField source="updated_at" />
-                </DataTable.Col>
-                <DataTable.Col source="deleted_at">
-                  <TextField source="deleted_at" />
-                </DataTable.Col>
-              </DataTable>
-            </ArrayField>
-          </DataTable.Col>
-        </DataTable>
-      </ArrayField>
-      <TextField source="tags" />
-      <ArrayField source="images">
-        <DataTable>
-          <DataTable.Col source="id">
-            <TextField source="id" />
-          </DataTable.Col>
-          <DataTable.Col source="url">
-            <UrlField source="url" />
-          </DataTable.Col>
-          <DataTable.Col source="metadata">
-            <TextField source="metadata" />
-          </DataTable.Col>
-          <DataTable.Col source="rank">
-            <NumberField source="rank" />
-          </DataTable.Col>
-
-          <DataTable.Col source="created_at">
-            <DateField source="created_at" />
-          </DataTable.Col>
-          <DataTable.Col source="updated_at">
-            <DateField source="updated_at" />
-          </DataTable.Col>
-          <DataTable.Col source="deleted_at">
-            <TextField source="deleted_at" />
-          </DataTable.Col>
-        </DataTable>
-      </ArrayField>
-      <ArrayField source="variants">
-        <DataTable>
-          <DataTable.Col source="id">
-            <TextField source="id" />
-          </DataTable.Col>
-          <DataTable.Col source="title">
-            <TextField source="title" />
-          </DataTable.Col>
-          <DataTable.Col source="sku">
-            <TextField source="sku" />
-          </DataTable.Col>
-          <DataTable.Col source="barcode">
-            <TextField source="barcode" />
-          </DataTable.Col>
-          <DataTable.Col source="ean">
-            <TextField source="ean" />
-          </DataTable.Col>
-          <DataTable.Col source="upc">
-            <TextField source="upc" />
-          </DataTable.Col>
-          <DataTable.Col source="allow_backorder">
-            <BooleanField source="allow_backorder" />
-          </DataTable.Col>
-          <DataTable.Col source="manage_inventory">
-            <BooleanField source="manage_inventory" />
-          </DataTable.Col>
-          <DataTable.Col source="hs_code">
-            <TextField source="hs_code" />
-          </DataTable.Col>
-          <DataTable.Col source="origin_country">
-            <TextField source="origin_country" />
-          </DataTable.Col>
-          <DataTable.Col source="mid_code">
-            <TextField source="mid_code" />
-          </DataTable.Col>
-          <DataTable.Col source="material">
-            <TextField source="material" />
-          </DataTable.Col>
-          <DataTable.Col source="weight">
-            <TextField source="weight" />
-          </DataTable.Col>
-          <DataTable.Col source="length">
-            <TextField source="length" />
-          </DataTable.Col>
-          <DataTable.Col source="height">
-            <TextField source="height" />
-          </DataTable.Col>
-          <DataTable.Col source="width">
-            <TextField source="width" />
-          </DataTable.Col>
-          <DataTable.Col source="metadata">
-            <TextField source="metadata" />
-          </DataTable.Col>
-          <DataTable.Col source="variant_rank">
-            <DateField source="variant_rank" />
-          </DataTable.Col>
-          <DataTable.Col source="thumbnail">
-            <TextField source="thumbnail" />
-          </DataTable.Col>
-
-          <DataTable.Col source="created_at">
-            <DateField source="created_at" />
-          </DataTable.Col>
-          <DataTable.Col source="updated_at">
-            <DateField source="updated_at" />
-          </DataTable.Col>
-          <DataTable.Col source="deleted_at">
-            <TextField source="deleted_at" />
-          </DataTable.Col>
-          <DataTable.Col source="options">
-            <ArrayField source="options">
-              <DataTable>
-                <DataTable.Col source="id">
-                  <TextField source="id" />
-                </DataTable.Col>
-                <DataTable.Col source="value">
-                  <TextField source="value" />
-                </DataTable.Col>
-                <DataTable.Col source="metadata">
-                  <TextField source="metadata" />
-                </DataTable.Col>
-
-                <DataTable.Col source="option.id">
-                  <TextField source="option.id" />
-                </DataTable.Col>
-                <DataTable.Col source="created_at">
-                  <DateField source="created_at" />
-                </DataTable.Col>
-                <DataTable.Col source="updated_at">
-                  <DateField source="updated_at" />
-                </DataTable.Col>
-                <DataTable.Col source="deleted_at">
-                  <TextField source="deleted_at" />
-                </DataTable.Col>
-              </DataTable>
-            </ArrayField>
-          </DataTable.Col>
-          <DataTable.Col source="prices">
-            <ArrayField source="prices">
-              <DataTable>
-                <DataTable.Col source="id">
-                  <TextField source="id" />
-                </DataTable.Col>
-                <DataTable.Col source="amount">
-                  <NumberField source="amount" />
-                </DataTable.Col>
-                <DataTable.Col source="currency_code">
-                  <TextField source="currency_code" />
-                </DataTable.Col>
-                <DataTable.Col source="min_quantity">
-                  <TextField source="min_quantity" />
-                </DataTable.Col>
-                <DataTable.Col source="max_quantity">
-                  <TextField source="max_quantity" />
-                </DataTable.Col>
-
-                <DataTable.Col source="created_at">
-                  <DateField source="created_at" />
-                </DataTable.Col>
-                <DataTable.Col source="updated_at">
-                  <DateField source="updated_at" />
-                </DataTable.Col>
-                <DataTable.Col source="rules">
-                  <TextField source="rules" />
-                </DataTable.Col>
-              </DataTable>
-            </ArrayField>
-          </DataTable.Col>
-        </DataTable>
-      </ArrayField>
-      <ArrayField source="sales_channels">
-        <DataTable>
-          <DataTable.Col source="id">
-            <TextField source="id" />
-          </DataTable.Col>
-          <DataTable.Col source="name">
-            <TextField source="name" />
-          </DataTable.Col>
-          <DataTable.Col source="description">
-            <TextField source="description" />
-          </DataTable.Col>
-          <DataTable.Col source="is_disabled">
-            <BooleanField source="is_disabled" />
-          </DataTable.Col>
-          <DataTable.Col source="metadata">
-            <TextField source="metadata" />
-          </DataTable.Col>
-          <DataTable.Col source="created_at">
-            <DateField source="created_at" />
-          </DataTable.Col>
-          <DataTable.Col source="updated_at">
-            <DateField source="updated_at" />
-          </DataTable.Col>
-          <DataTable.Col source="deleted_at">
-            <TextField source="deleted_at" />
-          </DataTable.Col>
-        </DataTable>
-      </ArrayField>
-    </SimpleShowLayout>
-  </Show>
+const SectionCard = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => (
+  <Card sx={{ mb: 2 }}>
+    <CardContent>
+      <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
+        {title}
+      </Typography>
+      {children}
+    </CardContent>
+  </Card>
 );
+
+const StatusChip = ({ source }: { source: string }) => {
+  const record = useRecordContext();
+  if (!record) return null;
+  const value = record[source];
+
+  const getColor = (): "success" | "warning" | "error" | "default" => {
+    switch (value) {
+      case "published":
+        return "success";
+      case "draft":
+        return "warning";
+      case "rejected":
+        return "error";
+      default:
+        return "default";
+    }
+  };
+
+  const translateStatus = (status: string) => {
+    const translations: Record<string, string> = {
+      published: "Dipublikasi",
+      draft: "Draft",
+      rejected: "Ditolak",
+      proposed: "Diajukan",
+    };
+    return translations[status] || status;
+  };
+
+  return (
+    <Chip
+      label={translateStatus(value)}
+      size="small"
+      color={getColor()}
+      sx={{ textTransform: "capitalize" }}
+    />
+  );
+};
+
+const DimensionField = () => {
+  const record = useRecordContext();
+  if (!record) return null;
+
+  const hasDimensions = record.weight || record.length || record.width || record.height;
+
+  if (!hasDimensions) return <Typography variant="body2">-</Typography>;
+
+  return (
+    <Stack spacing={0.5}>
+      {record.weight && (
+        <Typography variant="body2">
+          Berat: {record.weight} g
+        </Typography>
+      )}
+      {record.length && (
+        <Typography variant="body2">
+          Panjang: {record.length} cm
+        </Typography>
+      )}
+      {record.width && (
+        <Typography variant="body2">
+          Lebar: {record.width} cm
+        </Typography>
+      )}
+      {record.height && (
+        <Typography variant="body2">
+          Tinggi: {record.height} cm
+        </Typography>
+      )}
+    </Stack>
+  );
+};
+
+const VariantCard = () => {
+  const record = useRecordContext();
+  if (!record) return null;
+
+  return (
+    <Card sx={{ mb: 2, border: "1px solid #e0e0e0" }}>
+      <CardContent>
+        <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+          {record.title || `Variant ${String(record.id).slice(-6)}`}
+        </Typography>
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 6, md: 4 }}>
+            <Labeled label="SKU">
+              <Typography variant="body2">{record.sku || "-"}</Typography>
+            </Labeled>
+          </Grid>
+          <Grid size={{ xs: 6, md: 4 }}>
+            <Labeled label="Barcode">
+              <Typography variant="body2">{record.barcode || "-"}</Typography>
+            </Labeled>
+          </Grid>
+          <Grid size={{ xs: 6, md: 4 }}>
+            <Labeled label="Kelola Stok">
+              <Chip
+                label={record.manage_inventory ? "Ya" : "Tidak"}
+                size="small"
+                color={record.manage_inventory ? "success" : "default"}
+              />
+            </Labeled>
+          </Grid>
+          <Grid size={{ xs: 6, md: 4 }}>
+            <Labeled label="Backorder">
+              <Chip
+                label={record.allow_backorder ? "Ya" : "Tidak"}
+                size="small"
+                color={record.allow_backorder ? "warning" : "default"}
+              />
+            </Labeled>
+          </Grid>
+        </Grid>
+
+        {/* Prices */}
+        {record.prices && record.prices.length > 0 && (
+          <Box mt={2}>
+            <Typography variant="subtitle2" gutterBottom>
+              Harga:
+            </Typography>
+            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+              {record.prices.map((price: any) => (
+                <Chip
+                  key={price.id}
+                  label={`${price.currency_code?.toUpperCase()}: ${formatCurrency(price.amount, price.currency_code)}`}
+                  size="small"
+                  variant="outlined"
+                />
+              ))}
+            </Stack>
+          </Box>
+        )}
+
+        {/* Variant Options */}
+        {record.options && record.options.length > 0 && (
+          <Box mt={2}>
+            <Typography variant="subtitle2" gutterBottom>
+              Opsi:
+            </Typography>
+            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+              {record.options.map((opt: any) => (
+                <Chip
+                  key={opt.id}
+                  label={opt.value}
+                  size="small"
+                />
+              ))}
+            </Stack>
+          </Box>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
+
+const ImageGallery = () => {
+  const record = useRecordContext();
+  if (!record || !record.images || record.images.length === 0) {
+    return <Typography variant="body2">Tidak ada gambar</Typography>;
+  }
+
+  return (
+    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+      {record.images.map((image: any) => (
+        <Box
+          key={image.id}
+          component="img"
+          src={image.url}
+          alt="Product"
+          sx={{
+            width: 150,
+            height: 150,
+            objectFit: "cover",
+            borderRadius: 1,
+            border: "1px solid #e0e0e0",
+          }}
+        />
+      ))}
+    </Stack>
+  );
+};
+
+export const ProductShow = () => {
+  return (
+    <Show>
+      <Box sx={{ p: 2 }}>
+        <Grid container spacing={2}>
+          {/* Basic Information */}
+          <Grid size={{ xs: 12, md: 6 }}>
+            <SectionCard title="Informasi Produk">
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12 }}>
+                  <Labeled label="Judul">
+                    <TextField source="title" />
+                  </Labeled>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <Labeled label="Subjudul">
+                    <TextField source="subtitle" />
+                  </Labeled>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <Labeled label="Handle">
+                    <TextField source="handle" />
+                  </Labeled>
+                </Grid>
+                <Grid size={{ xs: 6 }}>
+                  <Labeled label="Status">
+                    <StatusChip source="status" />
+                  </Labeled>
+                </Grid>
+                <Grid size={{ xs: 6 }}>
+                  <Labeled label="Kategori">
+                    <TextField source="collection_id" />
+                  </Labeled>
+                </Grid>
+                <Grid size={{ xs: 6 }}>
+                  <Labeled label="Kartu Hadiah">
+                    <BooleanField source="is_giftcard" />
+                  </Labeled>
+                </Grid>
+                <Grid size={{ xs: 6 }}>
+                  <Labeled label="Dapat Diskon">
+                    <BooleanField source="discountable" />
+                  </Labeled>
+                </Grid>
+              </Grid>
+            </SectionCard>
+          </Grid>
+
+          {/* Dimensions & Customs */}
+          <Grid size={{ xs: 12, md: 6 }}>
+            <SectionCard title="Dimensi & Bea Cukai">
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12 }}>
+                  <Labeled label="Dimensi">
+                    <DimensionField />
+                  </Labeled>
+                </Grid>
+                <Grid size={{ xs: 6 }}>
+                  <Labeled label="HS Code">
+                    <TextField source="hs_code" />
+                  </Labeled>
+                </Grid>
+                <Grid size={{ xs: 6 }}>
+                  <Labeled label="Negara Asal">
+                    <TextField source="origin_country" />
+                  </Labeled>
+                </Grid>
+                <Grid size={{ xs: 6 }}>
+                  <Labeled label="MID Code">
+                    <TextField source="mid_code" />
+                  </Labeled>
+                </Grid>
+                <Grid size={{ xs: 6 }}>
+                  <Labeled label="Material">
+                    <TextField source="material" />
+                  </Labeled>
+                </Grid>
+              </Grid>
+            </SectionCard>
+          </Grid>
+
+          {/* Description */}
+          <Grid size={{ xs: 12 }}>
+            <SectionCard title="Deskripsi">
+              <Typography variant="body2" sx={{ whiteSpace: "pre-wrap" }}>
+                <TextField source="description" />
+              </Typography>
+            </SectionCard>
+          </Grid>
+
+          {/* Thumbnail */}
+          <Grid size={{ xs: 12, md: 6 }}>
+            <SectionCard title="Thumbnail">
+              <FunctionField
+                render={(record: any) =>
+                  record?.thumbnail ? (
+                    <Box
+                      component="img"
+                      src={record.thumbnail}
+                      alt="Thumbnail"
+                      sx={{
+                        maxWidth: 200,
+                        maxHeight: 200,
+                        objectFit: "contain",
+                        borderRadius: 1,
+                      }}
+                    />
+                  ) : (
+                    <Typography variant="body2" color="text.secondary">
+                      Tidak ada thumbnail
+                    </Typography>
+                  )
+                }
+              />
+            </SectionCard>
+          </Grid>
+
+          {/* Images */}
+          <Grid size={{ xs: 12, md: 6 }}>
+            <SectionCard title="Gambar">
+              <ImageGallery />
+            </SectionCard>
+          </Grid>
+
+          {/* Product Options */}
+          <Grid size={{ xs: 12, md: 6 }}>
+            <SectionCard title="Opsi Produk">
+              <ArrayField source="options">
+                <SingleFieldList>
+                  <FunctionField
+                    render={(record: any) => (
+                      <Stack spacing={1} sx={{ mb: 2 }}>
+                        <Typography variant="subtitle2" fontWeight="bold">
+                          {record.title}
+                        </Typography>
+                        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                          {record.values?.map((val: any) => (
+                            <Chip key={val.id} label={val.value} size="small" />
+                          ))}
+                        </Stack>
+                      </Stack>
+                    )}
+                  />
+                </SingleFieldList>
+              </ArrayField>
+            </SectionCard>
+          </Grid>
+
+          {/* Tags */}
+          <Grid size={{ xs: 12, md: 6 }}>
+            <SectionCard title="Tag">
+              <ArrayField source="tags">
+                <SingleFieldList>
+                  <ChipField source="value" />
+                </SingleFieldList>
+              </ArrayField>
+            </SectionCard>
+          </Grid>
+
+          {/* Variants */}
+          <Grid size={{ xs: 12 }}>
+            <SectionCard title="Varian">
+              <ArrayField source="variants">
+                <SingleFieldList>
+                  <VariantCard />
+                </SingleFieldList>
+              </ArrayField>
+            </SectionCard>
+          </Grid>
+
+          {/* Sales Channels */}
+          <Grid size={{ xs: 12, md: 6 }}>
+            <SectionCard title="Saluran Penjualan">
+              <ArrayField source="sales_channels">
+                <SingleFieldList>
+                  <FunctionField
+                    render={(record: any) => (
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <Chip
+                          label={record.name}
+                          size="small"
+                          color={record.is_disabled ? "default" : "success"}
+                        />
+                        {record.is_disabled && (
+                          <Typography variant="caption" color="text.secondary">
+                            (Nonaktif)
+                          </Typography>
+                        )}
+                      </Stack>
+                    )}
+                  />
+                </SingleFieldList>
+              </ArrayField>
+            </SectionCard>
+          </Grid>
+
+          {/* Metadata */}
+          <Grid size={{ xs: 12, md: 6 }}>
+            <SectionCard title="Metadata">
+              <MetadataField source="metadata" />
+            </SectionCard>
+          </Grid>
+
+          {/* Timestamps */}
+          <Grid size={{ xs: 12 }}>
+            <SectionCard title="Timestamp">
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 6, md: 4 }}>
+                  <Labeled label="Dibuat">
+                    <DateField source="created_at" showTime />
+                  </Labeled>
+                </Grid>
+                <Grid size={{ xs: 6, md: 4 }}>
+                  <Labeled label="Diperbarui">
+                    <DateField source="updated_at" showTime />
+                  </Labeled>
+                </Grid>
+                <Grid size={{ xs: 6, md: 4 }}>
+                  <Labeled label="Dihapus">
+                    <DateField source="deleted_at" showTime />
+                  </Labeled>
+                </Grid>
+              </Grid>
+            </SectionCard>
+          </Grid>
+        </Grid>
+      </Box>
+    </Show>
+  );
+};
